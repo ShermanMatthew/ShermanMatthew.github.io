@@ -5,7 +5,7 @@ image: "/posts/causal-impact-title-img.png"
 tags: [Causal Impact Analysis, Python]
 ---
 
-In this project we use Causal Impact Analysis to analyze and understand the sales uplift of customers who joined the new "Delivery Club" campaign.
+In this project, we use causal impact analysis to analyze and understand the sales uplift of customers who joined the new "Delivery Club" campaign.
 
 # Table of Contents
 
