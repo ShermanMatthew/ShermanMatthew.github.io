@@ -7,7 +7,7 @@ tags: [Customer Segmentation, Machine Learning, Clustering, Python]
 
 In this project, we use k-means clustering to segment the customer base to increase business understanding and to enhance the relevancy of targeted messaging and customer communications.
 
-# Table of contents
+# Table of Contents
 
 - [00. Project Overview](#overview-main)
     - [Context](#overview-context)
