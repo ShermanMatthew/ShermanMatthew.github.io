@@ -5,9 +5,9 @@ image: "/posts/classification-title-img.png"
 tags: [Customer Targeting, Machine Learning, Classification, Python]
 ---
 
-Our client, a grocery retailer, wants to utilize Machine Learning to reduce mailing costs, and improve ROI!
+Our client, a grocery retailer, wants to utilize machine learning to reduce mailing costs, and improve ROI.
 
-# Table of contents
+# Table of Contents
 
 - [00. Project Overview](#overview-main)
     - [Context](#overview-context)
