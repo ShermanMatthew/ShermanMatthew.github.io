@@ -22,8 +22,8 @@ avatar_image: /img/GitHub Profile Pic Square.JPG
 
 #-------------------------------
 # Contact links
-LinkedIn: "https://linkedin.com/in/sherman-matthew/"
-GitHub: "https://github.com/ShermanMatthew"
+linkedIn: "https://linkedin.com/in/sherman-matthew/"
+gitHub: "https://github.com/ShermanMatthew"
 
 paginate: 6
 paginate_path: "/page/:num"
