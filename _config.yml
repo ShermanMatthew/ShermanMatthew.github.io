@@ -17,13 +17,13 @@ url: "" # the base hostname & protocol for your site, e.g. http://example.com
 # About Section
 subtitle: Data Science <span style="color:#f58506"> Portfolio </span>
 location: "Culver City, CA"
-resume_url: /docs/Matthew Sherman Resume June 2026.pdf
+resume_url: /docs/Matthew Sherman Resume August 2026.pdf
 avatar_image: /img/GitHub Profile Pic Square.JPG
 
 #-------------------------------
 # Contact links
-linkedln: "https://linkedin.com/in/matthew-sherman-8954b8117/"
-github: "https://github.com/ShermanMatthew"
+LinkedIn: "https://linkedin.com/in/sherman-matthew/"
+GitHub: "https://github.com/ShermanMatthew"
 
 paginate: 6
 paginate_path: "/page/:num"
