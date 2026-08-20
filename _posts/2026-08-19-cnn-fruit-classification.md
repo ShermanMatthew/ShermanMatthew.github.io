@@ -7,7 +7,7 @@ tags: [Deep Learning, CNN, Data Science, Computer Vision, Python]
 
 In this project, we build and optimize a convolutional neural network to classify images of fruits, with the goal of helping a grocery retailer enhance and scale their sorting and delivery processes. 
 
-# Table of contents
+# Table of Contents
 
 - [00. Project Overview](#overview-main)
     - [Context](#overview-context)
