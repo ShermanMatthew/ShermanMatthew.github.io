@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Building an AI Help-Desk Assistant Using RAG (Retrieval Augmented Generation)
+title: Building an AI Help-Desk Assistant Using RAG (Retrieval-Augmented Generation)
 image: "/posts/gen-ai-rag-title-img.png"
 tags: [GenAI, RAG, LLMs, Python, LangChain]
 ---
