@@ -7,7 +7,7 @@ tags: [GenAI, SQL, Agents, Python, LangChain, PostgreSQL]
 
 In this project we build a practical **SQL AI Agent** for our grocery retail client, capable of taking natural-language questions and turning them into accurate PostgreSQL queries against their database.
 
-The agent is able to; interpret the user's intent, plan how to answer it using SQL, write an appropriate query, execute that query on the database, and return a clear natural-language answer  
+The agent is able to interpret the user's intent, plan how to answer it using SQL, write an appropriate query, execute that query on the database, and return a clear natural-language answer.
 
 We achieve this by combining:
 
@@ -70,7 +70,7 @@ We built an end-to-end SQL Agent that:
 * Uses LangChain’s SQL tooling to inspect schemas and run queries  
 * Returns both the SQL results and a human-readable explanation  
 
-We also traced and inspected runs in LangSmith, validating that queries were; correct, efficient, and aligned with our design rules.
+We also traced and inspected runs in LangSmith, validating that queries were correct, efficient, and aligned with our design rules.
 
 ### Results <a name="overview-results"></a>
 
@@ -154,7 +154,7 @@ ___
 
 # 02. SQL Agent Overview <a name="agent-overview"></a>
 
-Rather than simply asking an LLM to *write some SQL*, we build a full **SQL Agent**. The difference is that a simple *SQL writer* just outputs a query (it has no direct access to the database and cannot inspect schemas or data) whereas a SQL Agent can; read the schema, inspect sample rows, choose tools to run queries, iterate based on tool results, and of course return a final answer.
+Rather than simply asking an LLM to *write some SQL*, we build a full **SQL Agent**. The difference is that a simple *SQL writer* just outputs a query (it has no direct access to the database and cannot inspect schemas or data) whereas a SQL Agent can read the schema, inspect sample rows, choose tools to run queries, iterate based on tool results, and of course return a final answer.
 
 In this project, the agent:
 
@@ -162,7 +162,7 @@ In this project, the agent:
 2. Uses the tools provided by LangChain’s SQL toolkit to understand the schema and data  
 3. Generates a query that follows our design rules  
 4. Executes it against the database  
-5. Summarises the results clearly for the user, in natural language 
+5. Summarizes the results clearly for the user, in natural language 
 
 This makes the agent both **powerful** and **constrained**, which is exactly what we want.
 
@@ -213,8 +213,8 @@ with engine.connect() as conn:
 
 Key choices:
 
-* Pool_pre_ping = True: Validates connections before use  
-* Statement_timeout = 15000: Prevents long-running queries from hanging  
+* pool_pre_ping = True: Validates connections before use  
+* statement_timeout = 15000: Prevents long-running queries from hanging  
 * The *select 1* check confirms that credentials and network access are correct  
 
 ---
@@ -257,7 +257,7 @@ sql_agent = ChatOpenAI(model="gpt-4.1",
                        temperature=0)
 ```
 <br>
-Here we use *gpt-4.1* with a temperature of 0, which prioritises determinism, consistency, and reduced creativity (which is ideal for SQL)  
+Here we use *gpt-4.1* with a temperature of 0, which prioritizes determinism, consistency, and reduced creativity (which is ideal for SQL)  
 
 ---
 
@@ -272,7 +272,7 @@ toolkit = SQLDatabaseToolkit(db=db, llm=sql_agent)
 tools = toolkit.get_tools()
 ```
 <br>
-These tools allow the agent to; inspect which tables exist, look at table info and sample rows, construct and execute SQL queries, and refine or correct queries based on feedback.
+These tools allow the agent to inspect which tables exist, look at table info and sample rows, construct and execute SQL queries, and refine or correct queries based on feedback.
 
 Rather than guessing SQL from scratch, the agent can actively *work with* the database.
 
@@ -415,7 +415,7 @@ Question C:
 
 "Which customer had the highest average transaction value in July 2020, and what was that value?"
 
-SQL Query B:
+SQL Query C:
 
 with transaction_values as (
 select
@@ -522,7 +522,7 @@ Two example questions are seen below:
 
 The agent:  
    
-* Recognised this is a question about customer-level data  
+* Recognized this is a question about customer-level data  
 * Used the *customer_details* table  
 * Computed average distance by gender  
 * Returned both the SQL and a clear explanation  
