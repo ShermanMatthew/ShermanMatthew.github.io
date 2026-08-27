@@ -5,11 +5,11 @@ image: "/posts/gen-ai-rag-title-img.png"
 tags: [GenAI, RAG, LLMs, Python, LangChain]
 ---
 
-In this project we build a real, production-style AI assistant for our grocery retail client, capable of answering customer help-desk questions using **Retrieval Augmented Generation (RAG)**.  
+In this project, we build a real, production-style AI assistant for our grocery retail client, capable of answering customer help-desk questions using **retrieval-augmented generation (RAG)**.  
 
 We begin by building a core RAG system that loads internal documents, chunks them intelligently, embeds them into a vector database, retrieves relevant content, and generates grounded answers.  
 
-We then extend the assistant by **adding conversational memory**, allowing the model to maintain a short-term personalised dialogue while still respecting strict grounding rules.
+We then extend the assistant by **adding conversational memory**, allowing the model to maintain a short-term personalized dialogue while still respecting strict grounding rules.
 
 # Table of Contents
 
@@ -40,7 +40,7 @@ ___
 
 ### Context <a name="overview-context"></a>
 
-Our client, a grocery retailers, operates a busy customer help-desk, answering queries around store hours, product availability, delivery services, loyalty cards, payments, and general store operations.
+Our client, a grocery retailer, operates a busy customer help-desk, answering queries around store hours, product availability, delivery services, loyalty cards, payments, and general store operations.
 
 They need an **AI assistant** that can answer these questions accurately, consistently, and safely, using only approved internal information.
 
@@ -73,7 +73,7 @@ The final assistant:
 
 Potential future enhancements include:
 
-* Ingestion of multiple document types (PDFs, product catalogues)  
+* Ingestion of multiple document types (PDFs, product catalogs)  
 * Adding tool use such as SQL lookups for live stock, prices, or loyalty data  
 * Adding a real chat interface (frontend + backend)  
 * Streaming responses for improved UX  
@@ -113,7 +113,7 @@ ___
 
 # 02. RAG Overview <a name="rag-overview"></a>
 
-Large Language Models are powerful, but they have a key limitation, **their knowledge is fixed at training time**, and they cannot reliably retrieve up-to-date, organisation-specific, or policy-specific information.
+Large Language Models are powerful, but they have a key limitation: **their knowledge is fixed at training time**, and they cannot reliably retrieve up-to-date, organization-specific, or policy-specific information.
 
 A naive solution would be to simply **feed the entire help-desk document into the model on every query**, but this has major drawbacks:
 
@@ -165,7 +165,7 @@ text = docs[0].page_content
 ```
 
 <br>
-**Why this matters:**  Document loaders standardise the data into LangChain *Document* objects, which makes later steps like chunking and embedding seamless.
+**Why this matters:**  Document loaders standardize the data into LangChain *Document* objects, which makes later steps like chunking and embedding seamless.
 
 ---
 
@@ -291,7 +291,7 @@ This keeps the context focused and prevents irrelevant content from confusing th
 This pipeline connects all of the key components of our system, namely:
 
 1. Take in the user query  
-2. Retrieve in relevant chunks from the vector database  
+2. Retrieve relevant chunks from the vector database  
 3. Format them  
 4. Inject them into the prompt template, along with the system instructions and user query 
 5. Pass this information to the LLM  
@@ -347,7 +347,7 @@ chain_with_history = RunnableWithMessageHistory(
 )
 ```
 
-When adding memory, we also update the system prompt to include a placeholder place for it to be injected.  It is also important to include information in the system instructions about how to make use of this memory, i.e. to only use it for personalisation
+When adding memory, we also update the system prompt to include a placeholder for it to be injected.  It is also important to include information in the system instructions about how to make use of this memory, i.e. to only use it for personalization
 
 ___
 
@@ -369,7 +369,7 @@ As an illustration, here are two example queries we passed into the system, alon
 **Query:** What is a baby dolphin called?  
 **Response:** I don't have that information in the provided context. Please email human@abc-grocery.com and our team can help.  
 <br>
-The latter question is important and shows a behaviour that we want, and that we described in the system instructions.  This was a question that was not answerable using the business-specific context documents, and thus it did not create an answer from it's own memory, it provided the default response.
+The latter question is important and shows a behavior that we want, and that we described in the system instructions.  This was a question that was not answerable using the business-specific context documents, and thus it did not create an answer from its own memory, it provided the default response.
 
 ___
 
@@ -387,7 +387,7 @@ This helps us confirm that:
 
 To enable this, we implemented a clever parallel chain that returns **both** the final answer, and the raw retrieved context (the documents)  
 
-The code that enables this behaviour is below:
+The code that enables this behavior is below:
 
 ```python
 from langchain_core.runnables import RunnableParallel
@@ -406,7 +406,7 @@ print(response["answer"].content)
 <br>
 By calling *RunnableParallel* we are able to run multiple pieces of logic at once.  
 
-In this case, **answer** runs the full RAG pipeline, **context** runs the retriever on it's own (allowing us to capture the returned chunks), and **input** returns the original user query.  When we invoke this, we are returned a *dictionary* containing everything we need to inspect what drove the LLM's answer.
+In this case, **answer** runs the full RAG pipeline, **context** runs the retriever on its own (allowing us to capture the returned chunks), and **input** returns the original user query.  When we invoke this, we are returned a *dictionary* containing everything we need to inspect what drove the LLM's answer.
 
 This means a single **.invoke()** call returns a *dictionary* containing everything we need:
 
@@ -420,12 +420,12 @@ ___
 
 Potential future enhancements include:
 
-* Ingestion of multiple data types (PDFs, product catalogues)  
+* Ingestion of multiple data types (PDFs, product catalogs)  
 * Integrating SQL tools for real-time store data, delivery slots, or loyalty information  
 * Building a production web interface (React + FastAPI)  
 * Automated indexing pipelines to detect new documents  
 * Response streaming for real-time chat UX  
 
-This project forms a strong foundation for a scalable enterprise help-desk assistant powered by Retrieval Augmented Generation.
+This project forms a strong foundation for a scalable enterprise help-desk assistant powered by retrieval-augmented generation.
 
 ___
