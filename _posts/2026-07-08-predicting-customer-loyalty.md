@@ -309,15 +309,15 @@ In our dataset, we have one categorical variable, *gender*, which has values of 
 
 The linear regression algorithm is not able to deal with data in this format, as it cannot assign any numerical meaning to it when looking to assess the relationship between the variable and the dependent variable.
 
-As *gender* doesn't have any explicit *order* to it ("male" isn't higher or lower than "female"), one appropriate approach is to apply One Hot Encoding to the categorical column.
+As *gender* doesn't have any explicit *order* to it ("male" isn't higher or lower than "female"), one appropriate approach is to apply one-hot encoding to the categorical column.
 
-One Hot Encoding can be thought of as a way to represent categorical variables as binary vectors: a set of *new* columns for each categorical value with either a 1 or a 0 saying whether that value is true or not for that observation. These new columns would go into our model as input variables, and the original column is discarded.
+One-hot encoding can be thought of as a way to represent categorical variables as binary vectors: a set of *new* columns for each categorical value with either a 1 or a 0 saying whether that value is true or not for that observation. These new columns would go into our model as input variables, and the original column is discarded.
 
 We also drop one of the new columns using the parameter *drop = "first"*. We do this to avoid the *dummy variable trap*, where our newly created encoded columns perfectly predict each other, and we run the risk of breaking the assumption that there is no multicollinearity, a requirement for some models, including linear regression. Multicollinearity occurs when two or more input variables are *highly* correlated with each other. It is a scenario we attempt to avoid as, in short, while it won't necessarily affect the predictive accuracy of our model, it can make it difficult to trust the statistics around how well the model is performing and how much impact each input variable is truly having.
 
-In the code, we also make sure to apply *fit_transform* to the training set, but only *transform* to the test set. This means the One Hot Encoding logic will *learn and apply* the "rules" from the training data but only *apply* them to the test data. This is important to avoid *data leakage*, where the test set *learns* information about the training data, and means we can't fully trust model performance metrics.
+In the code, we also make sure to apply *fit_transform* to the training set, but only *transform* to the test set. This means the one-hot encoding logic will *learn and apply* the "rules" from the training data but only *apply* them to the test data. This is important to avoid *data leakage*, where the test set *learns* information about the training data, and means we can't fully trust model performance metrics.
 
-For ease, after we have applied One Hot Encoding, we turn our training and test objects back into pandas DataFrames, with the column names applied.
+For ease, after we have applied one-hot encoding, we turn our training and test objects back into pandas DataFrames, with the column names applied.
 
 <br>
 ```python
@@ -613,7 +613,7 @@ In our dataset, we have one categorical variable, *gender*, which has values of 
 
 Just like the linear regression algorithm, the decision tree cannot deal with data in this format, as it cannot assign any numerical meaning to it when looking to assess the relationship between the variable and the dependent variable.
 
-As *gender* doesn't have any explicit *order* to it, we would again apply One Hot Encoding to the categorical column.
+As *gender* doesn't have any explicit *order* to it, we would again apply one-hot encoding to the categorical column.
 
 <br>
 ```python
@@ -894,7 +894,7 @@ In our dataset, we have one categorical variable, *gender*, which has values of 
 
 Just like the linear regression algorithm, random forests cannot deal with data in this format, as it can't assign any numerical meaning to it when looking to assess the relationship between the variable and the dependent variable.
 
-As *gender* doesn't have any explicit *order* to it, we again apply One Hot Encoding to the categorical column.
+As *gender* doesn't have any explicit *order* to it, we again apply one-hot encoding to the categorical column.
 
 <br>
 ```python
@@ -1075,15 +1075,15 @@ That code gives us the below plots, the first being for *feature importance* and
 ![alt text](/img/posts/rf-regression-permutation-importance.png "Random Forest Permutation Importance Plot")
 
 <br>
-The overall story from both approaches is very similar, in that by far the most important input variable is *distance_from_store*, which is the same insights we derived when assessing our Linear Regression & Decision Tree models.
+The overall story from both approaches is very similar, in that by far the most important input variable is *distance_from_store*, which is the same insight we derived when assessing our linear regression and decision tree models.
 
-There are slight differences in the order or "importance" for the remaining variables but overall they have provided similar findings.
+There are slight differences in the order or "importance" for the remaining variables, but overall they have provided similar findings.
 
 ___
 <br>
 # Modeling Summary  <a name="modeling-summary"></a>
 
-The most important outcome for this project was predictive accuracy, rather than explicitly understanding the drivers of prediction. Based upon this, we chose the model that performed the best when predicted on the test set - the Random Forest.
+The most important outcome for this project was predictive accuracy, rather than explicitly understanding the drivers of prediction. Based upon this, we chose the model that performed the best when predicted on the test set: the random forest.
 
 <br>
 **Metric 1: Adjusted R-Squared (Test Set)**
@@ -1093,30 +1093,30 @@ The most important outcome for this project was predictive accuracy, rather than
 * Linear Regression = 0.754
 
 <br>
-**Metric 2: R-Squared (K-Fold Cross Validation, k = 4)**
+**Metric 2: R-Squared (K-Fold Cross-Validation, k = 4)**
 
 * Random Forest = 0.923
 * Decision Tree = 0.871
 * Linear Regression = 0.853
 
 <br>
-Even though we were not specifically interested in the drivers of prediction, it was interesting to see across all three modeling approaches, that the input variable with the biggest impact on the prediction was *distance_from_store* rather than variables such as *total sales*.  This is interesting information for the business, so discovering this as we went was worthwhile.
+Even though we were not specifically interested in the drivers of prediction, it was interesting to see that, across all three modeling approaches, the input variable with the biggest impact on the prediction was *distance_from_store*, rather than variables such as *total sales*. This is interesting information for the business, so discovering this as we went was worthwhile.
 
 <br>
 # Predicting Missing Loyalty Scores <a name="modeling-predictions"></a>
 
-We have selected the model to use (Random Forest) and now we need to make the *loyalty_score* predictions for those customers that the market research consulting firm were unable to tag.
+We have selected the model to use (random forest), and now we need to make the *loyalty_score* predictions for those customers that the market research consulting firm was unable to tag.
 
-We cannot just pass the data for these customers into the model, as is - we need to ensure the data is in exactly the same format as what was used when training the model.
+We cannot just pass the data for these customers into the model, as is. We need to ensure the data is in exactly the same format as what was used when training the model.
 
 In the following code, we will
 
 * Import the required packages for preprocessing
 * Import the data for those customers who are missing a *loyalty_score* value
-* Import our model object & any preprocessing artifacts
+* Import our model object and any preprocessing artifacts
 * Drop columns that were not used when training the model (customer_id)
 * Drop rows with missing values
-* Apply One Hot Encoding to the gender column (using transform)
+* Apply one-hot encoding to the gender column (using transform)
 * Make the predictions using .predict()
 
 <br>
@@ -1139,7 +1139,7 @@ to_be_scored.drop(["customer_id"], axis = 1, inplace = True)
 # drop missing values
 to_be_scored.dropna(how = "any", inplace = True)
 
-# apply one hot encoding (transform only)
+# apply one-hot encoding (transform only)
 categorical_vars = ["gender"]
 encoder_vars_array = one_hot_encoder.transform(to_be_scored[categorical_vars])
 encoder_feature_names = one_hot_encoder.get_feature_names(categorical_vars)
@@ -1147,19 +1147,19 @@ encoder_vars_df = pd.DataFrame(encoder_vars_array, columns = encoder_feature_nam
 to_be_scored = pd.concat([to_be_scored.reset_index(drop=True), encoder_vars_df.reset_index(drop=True)], axis = 1)
 to_be_scored.drop(categorical_vars, axis = 1, inplace = True)
 
-# make our predictions!
+# make our predictions
 loyalty_predictions = regressor.predict(to_be_scored)
 
 ```
 <br>
-Just like that, we have made our *loyalty_score* predictions for these missing customers.  Due to the impressive metrics on the test set, we can be reasonably confident with these scores.  This extra customer information will ensure our client can undertake more accurate and relevant customer tracking, targeting, and comms.
+Just like that, we have made our *loyalty_score* predictions for these missing customers. Because of the impressive metrics on the test set, we can be reasonably confident with these scores. This extra customer information will ensure our client can undertake more accurate and relevant customer tracking, targeting, and comms.
 
 ___
 <br>
 # Growth & Next Steps <a name="growth-next-steps"></a>
 
-While predictive accuracy was relatively high - other modeling approaches could be tested, especially those somewhat similar to Random Forest, for example XGBoost, LightGBM to see if even more accuracy could be gained.
+While predictive accuracy was relatively high, other modeling approaches could be tested, especially those somewhat similar to random forest, such as XGBoost and LightGBM, to see if even more accuracy could be gained.
 
-We could even look to tune the hyperparameters of the Random Forest, notably regularization parameters such as tree depth, as well as potentially training on a higher number of Decision Trees in the Random Forest.
+We could even look to tune the hyperparameters of the random forest, notably regularization parameters such as tree depth, as well as potentially training on a higher number of decision trees.
 
-From a data point of view, further variables could be collected, and further feature engineering could be undertaken to ensure that we have as much useful information available for predicting customer loyalty.
+From a data point of view, further variables could be collected and further feature engineering could be undertaken to ensure that we have as much useful information available for predicting customer loyalty.
