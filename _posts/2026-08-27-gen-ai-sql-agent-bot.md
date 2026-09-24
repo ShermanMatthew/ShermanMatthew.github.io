@@ -1,15 +1,15 @@
 ---
 layout: post
-title: Building an AI SQL Agent On A Live Cloud-Based Database
+title: Building an AI SQL Agent on a Live Cloud-Based Database
 image: "/posts/gen-ai-sql-agent-title-img.png"
 tags: [GenAI, SQL, Agents, Python, LangChain, PostgreSQL]
 ---
 
-In this project we build a practical **SQL AI Agent** for our grocery retail client, capable of taking natural-language questions and turning them into accurate PostgreSQL queries against their database.
+In this project, I built a practical **SQL AI Agent** for a grocery retail client. It is capable of taking natural-language questions and turning them into accurate PostgreSQL queries against a database.
 
 The agent is able to interpret the user's intent, plan how to answer it using SQL, write an appropriate query, execute that query on the database, and return a clear natural-language answer.
 
-We achieve this by combining:
+This is achieved by combining:
 
 * A secure database connection  
 * A carefully scoped database wrapper  
@@ -36,8 +36,8 @@ We achieve this by combining:
     - [SQL Toolkit and Tools](#agent-toolkit)
     - [System Prompt](#agent-prompt)
     - [Creating the Agent](#agent-create)
-- [05. Application & Examples](#agent-application)
-- [06. Growth & Next Steps](#growth-next-steps)
+- [05. Application and Examples](#agent-application)
+- [06. Growth and Next Steps](#growth-next-steps)
 
 ___
 
@@ -45,9 +45,9 @@ ___
 
 ### Context <a name="overview-context"></a>
 
-ABC Grocery holds rich customer and transaction data in a PostgreSQL database. Data Science and Analytics teams often ask questions such as:
+Our client holds rich customer and transaction data in a PostgreSQL database. Data science and analytics teams often ask questions such as:
 
-* *Which customers live furthest from the store on average?*  
+* *What types of customers live farthest from the store on average?*  
 * *What is the average transaction value over a given period?*  
 * *How do spending patterns differ by gender or credit score?*  
 
@@ -58,36 +58,36 @@ The goal of this project is to build an **AI SQL Agent** that can take a plain-E
 1. Understand what is being asked  
 2. Design a query using good SQL practices  
 3. Execute it safely against the database  
-4. Return a concise natural-language summary  
+4. Return a concise, natural-language summary  
 
 ### Actions <a name="overview-actions"></a>
 
-We built an end-to-end SQL Agent that:
+I built an end-to-end SQL Agent that:
 
-* Securely connects to the DSI PostgreSQL database  
+* Securely connects to the PostgreSQL database  
 * Exposes only the required schema and tables to the agent  
 * Uses a modern LLM (gpt-4.1) configured with a dedicated SQL system prompt  
 * Uses LangChain’s SQL tooling to inspect schemas and run queries  
 * Returns both the SQL results and a human-readable explanation  
 
-We also traced and inspected runs in LangSmith, validating that queries were correct, efficient, and aligned with our design rules.
+I also traced and inspected runs in LangSmith, validating that queries were correct, efficient, and aligned with design rules.
 
 ### Results <a name="overview-results"></a>
 
 The final SQL Agent:
 
 * Correctly answered natural-language questions that touched both tables  
-* Automatically handled grouping, aggregation and joins  
+* Automatically handled grouping, aggregation, and joins  
 * Respected constraints such as the allowed date range and aggregation discipline  
-* Demonstrated good practices (for example, handling transaction-level aggregation correctly)  
+* Demonstrated good practices (e.g., handling transaction-level aggregation correctly)  
 
-In short, we now have a **self-serve analytics layer** on top of the SQL database, powered by an LLM, but kept safe and controlled through careful prompting and tooling.
+In short, there is now a **self-serve analytics layer** on top of the SQL database, powered by an LLM, but kept safe and controlled through careful prompting and tooling.
 
 ### Growth/Next Steps <a name="overview-growth"></a>
 
 Potential future enhancements include:
 
-* Exposing additional tables (for example, product metadata, campaign data)  
+* Exposing additional tables (e.g., product metadata, campaign data)  
 * Adding a lightweight UI so non-technical users can chat with the agent  
 * Logging queries and responses for audit and learning  
 * Adding evaluation harnesses to automatically check query correctness  
@@ -154,17 +154,17 @@ ___
 
 # 02. SQL Agent Overview <a name="agent-overview"></a>
 
-Rather than simply asking an LLM to *write some SQL*, we build a full **SQL Agent**. The difference is that a simple *SQL writer* just outputs a query (it has no direct access to the database and cannot inspect schemas or data) whereas a SQL Agent can read the schema, inspect sample rows, choose tools to run queries, iterate based on tool results, and of course return a final answer.
+Rather than simply asking an LLM to *write some SQL*, I built a full **SQL Agent**. The difference is that a simple *SQL writer* just outputs a query. It has no direct access to the database and cannot inspect schemas or data. Meanwhile, a SQL Agent can read the schema, inspect sample rows, choose tools to run queries, iterate based on tool results, and return a final answer.
 
 In this project, the agent:
 
-1. Receives a natural language question  
+1. Receives a natural-language question  
 2. Uses the tools provided by LangChain’s SQL toolkit to understand the schema and data  
-3. Generates a query that follows our design rules  
+3. Generates a query that follows the design rules  
 4. Executes it against the database  
 5. Summarizes the results clearly for the user, in natural language 
 
-This makes the agent both **powerful** and **constrained**, which is exactly what we want.
+This makes the agent both **powerful** and **constrained**, which is exactly what is wanted.
 
 ___
 
@@ -172,7 +172,7 @@ ___
 
 ## Environment Variables <a name="db-env"></a>
 
-We begin by loading our database and API credentials from a *.env* file:
+I began by loading the database and API credentials from a *.env* file:
 
 ```python
 import os
@@ -184,7 +184,7 @@ load_dotenv()
 
 ## Postgres Connection String <a name="db-uri"></a>
 
-We construct a PostgreSQL connection string using environment variables from our .env file.
+I constructed a PostgreSQL connection string using environment variables from the .env file.
 
 ```python
 POSTGRES_URI = (f"postgresql+psycopg2://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}"
@@ -195,7 +195,7 @@ POSTGRES_URI = (f"postgresql+psycopg2://{os.getenv('POSTGRES_USER')}:{os.getenv(
 
 ## Engine and Health Check <a name="db-engine"></a>
 
-We then create a SQLAlchemy engine and perform a quick health check:
+I then created a SQLAlchemy engine and performed a quick health check:
 
 ```python
 # create the database engine
@@ -221,7 +221,7 @@ Key choices:
 
 ## SQLDatabase Wrapper <a name="db-sqldatabase"></a>
 
-Next, we wrap our engine in LangChain’s *SQLDatabase* utility, scoping the agent to only the tables we want:
+Next, I wrapped the engine in LangChain’s *SQLDatabase* utility, scoping the agent to only the tables we want:
 
 ```python
 from langchain_community.utilities import SQLDatabase
@@ -248,7 +248,7 @@ ___
 
 ## LLM Setup <a name="agent-llm"></a>
 
-We configure a dedicated LLM for our SQL Agent:
+I configured a dedicated LLM for the SQL Agent:
 
 ```python
 from langchain_openai import ChatOpenAI
@@ -257,13 +257,13 @@ sql_agent = ChatOpenAI(model="gpt-4.1",
                        temperature=0)
 ```
 <br>
-Here we use *gpt-4.1* with a temperature of 0, which prioritizes determinism, consistency, and reduced creativity (which is ideal for SQL)  
+Here, I used *gpt-4.1* with a temperature of 0, which prioritizes determinism, consistency, and reduced creativity (which is ideal for SQL).
 
 ---
 
 ## SQL Toolkit and Tools <a name="agent-toolkit"></a>
 
-We then create a toolkit that gives the agent SQL-specific abilities:
+I then created a toolkit that gives the agent SQL-specific abilities:
 
 ```python
 from langchain_community.agent_toolkits import SQLDatabaseToolkit
@@ -282,7 +282,7 @@ Rather than guessing SQL from scratch, the agent can actively *work with* the da
 
 The system prompt is critical. It defines the agent’s role, scope, and guardrails.
 
-We read it from a separate text file:
+It is read from a separate text file:
 
 ```python
 # bring in the system instructions
@@ -295,7 +295,7 @@ For reference, the content of *sql-agent-system-prompt.txt* is shown below:
 ```text
 ROLE:
 
-You are an expert SQL data analyst, and helpful assistant. Convert the user’s question into an accurate, efficient PostgreSQL 16 SELECT query and a concise natural-language answer.
+You are an expert SQL data analyst and helpful assistant. Convert the user’s question into an accurate, efficient PostgreSQL 16 SELECT query and a concise natural-language answer.
 
 
 SCOPE:
@@ -339,7 +339,7 @@ grocery_db.customer_details can be joined to grocery_db.transactions using the s
 
 DATA WINDOW:
 
-Transactions data is available between 2020-04-01 to 2020-09-30. If the user asks about "this period", assume that range. If they ask about a different period, filter explicitly. If they ask for data from outside this window, reply to them with the information pertaining to the period that is available.
+Transaction data is available between 2020-04-01 and 2020-09-30. If the user asks about "this period," assume that range. If they ask about a different period, filter explicitly. If they ask for data from outside this window, reply to them with the information pertaining to the period that is available.
 
 
 QUERY DESIGN RULES:
@@ -482,7 +482,7 @@ All of which greatly increase the chance of correct, production-quality queries.
 
 ## Creating the Agent <a name="agent-create"></a>
 
-Finally, we create the agent itself:
+Finally, I created the agent itself:
 
 ```python
 from langchain.agents import create_agent
@@ -502,14 +502,14 @@ Given a user question, it can plan, call tools, and reason step by step toward a
 
 ___
 
-# 05. Application & Examples <a name="agent-application"></a>
+# 05. Application and Examples <a name="agent-application"></a>
 
-To send a query to the agent, we use LangChain’s *HumanMessage* format:
+To send a query to the agent, I used LangChain’s *HumanMessage* format:
 
 ```python
 from langchain_core.messages import HumanMessage
 
-user_query = "On average, which gender lives furthest from store?"
+user_query = "On average, which gender lives farthest from store?"
 user_query = "What is the average transaction value in September 2020 for male customers who have a credit score above 0.5"
 
 result = agent.invoke({"messages": [HumanMessage(content=user_query)]})
@@ -518,7 +518,7 @@ print(result["messages"][-1].content)
 
 Two example questions are seen below:
 
-1. **Question:** *On average, which gender lives furthest from the store?*  
+1. **Question:** *On average, which gender lives farthest from the store?*  
 
 The agent:  
    
@@ -538,13 +538,13 @@ This required both tables and more careful logic. Here, the agent:
 * Correctly aggregated sales at the transaction level (summing by *transaction_id* first)  
 * Then averaged these transaction values per customer  
 
-Again, we cross-checked the SQL and results, and inspected the run in LangSmith to confirm that the agent followed the desired approach.
+Again, I cross-checked the SQL and results, and inspected the run in LangSmith to confirm that the agent followed the desired approach.
 
-These examples demonstrate that the agent is not just writing plausible SQL, but is actually **reasoning correctly about grain, joins, and aggregations**, guided by the system prompt and tools.
+These examples demonstrate that the agent is not just writing plausible SQL, but it is actually **reasoning correctly about grain, joins, and aggregations**, guided by the system prompt and tools.
 
 ___
 
-# 06. Growth & Next Steps <a name="growth-next-steps"></a>
+# 06. Growth and Next Steps <a name="growth-next-steps"></a>
 
 Potential future enhancements include:
 
@@ -554,6 +554,6 @@ Potential future enhancements include:
 * Adding automated evaluations to catch incorrect queries or edge cases  
 * Allowing the agent to ask clarification questions in more complex scenarios  
 
-This project provides a strong foundation for an AI-powered, self-serve analytics layer on top of ABC Grocery’s SQL data, with safety and correctness built in from the ground up.
+This project provides a strong foundation for an AI-powered, self-serve analytics layer on top of the client’s SQL data, with safety and correctness built in from the ground up.
 
 ___
