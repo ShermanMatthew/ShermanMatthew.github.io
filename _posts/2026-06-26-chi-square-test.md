@@ -1,11 +1,11 @@
 ---
 layout: post
-title: Assessing Campaign Performance Using Chi-Square Test For Independence
+title: Assessing Campaign Performance Using Chi-Square Test for Independence
 image: "/posts/ab-testing-title-img.png"
 tags: [AB Testing, Hypothesis Testing, Chi-Square, Python]
 ---
 
-In this project, we apply a chi-square test for independence (a hypothesis test) to assess the performance of two types of mailers that were sent out to promote a new service.
+In this project, I applied a chi-square test for independence (a hypothesis test) to assess the performance of two types of mailers that were sent out to promote a new service.
 
 # Table of Contents
 
