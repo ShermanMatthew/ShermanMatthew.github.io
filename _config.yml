@@ -9,13 +9,13 @@ plugins:
 #-------------------------------
 # General Site Settings
 title: Matthew Sherman
-description: "Hello! My name is Matthew, and I am a data scientist. My portfolio focuses on interesting projects I have recently undertaken, with a strong emphasis on business impact. Please visit my GitHub and LinkedIn pages (or download my résumé) by using the links below."
+description: "Hello! My name is Matthew, and I am a data scientist and data analyst. My portfolio focuses on interesting projects I have recently undertaken, with a strong emphasis on business impact. Please visit my GitHub and LinkedIn pages (or download my résumé) by using the links below."
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 
 #-------------------------------
 # About Section
-subtitle: Data Science <span style="color:#f58506"> Portfolio </span>
+subtitle: Data Science & Data Analytics <span style="color:#f58506"> Portfolio </span>
 location: "Culver City, CA"
 resume_url: /docs/Matthew_Sherman_Resume.docx
 avatar_image: /img/GitHub Profile Pic Square.JPG
